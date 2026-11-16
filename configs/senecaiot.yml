@@ -1,0 +1,30 @@
+# senecaiot.yml
+# Kubernetes Deployment for the modified TML container
+#
+# Based on the upstream file:
+#   https://github.com/smaurice101/raspberrypi/blob/main/kubernetes/yaml
+# Replace <dockerhub-username> with your Docker Hub ID. The image is the one
+# built and pushed with the "_modification" suffix.
+#
+# Apply with:  kubectl apply -f senecaiot.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seneca-iot-deployment
+spec:
+  selector:
+    matchLabels:
+      app: iot
+  replicas: 1 # tells deployment to run 1 pod matching the template
+  template:
+    metadata:
+      labels:
+        app: iot
+    spec:
+      hostNetwork: true
+      containers:
+      - name: iot
+        image: <dockerhub-username>/seneca-iot-tml-kafka-amd64_modification
+        ports:
+          - containerPort: 9005
+            hostPort: 9005
